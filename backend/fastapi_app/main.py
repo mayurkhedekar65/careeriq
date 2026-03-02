@@ -113,7 +113,7 @@ def generate_roadmap(request):
 
 
 @app.get("/generate_interview_questions")
-def generate_roadmap(request):
+def generate_interview_questions(request):
     level_type = request.level
     category = request.category
     
