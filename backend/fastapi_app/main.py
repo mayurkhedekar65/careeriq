@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from .schemas.requestSchema import ResumeAnalysisRequest
+from schemas.requestSchema import ResumeAnalysisRequest, InterviewQuestionsRequest, Roadmap
 import os
 from langchain_groq import ChatGroq
 import json
@@ -24,22 +24,23 @@ app.add_middleware(
 # load the api key
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
 # resume analysis and return a json response with insights and suggestions
 
 
 @app.post("/analyze_resume")
 async def analyze_resume(request: ResumeAnalysisRequest):
-    os.environ["GROQ_API_KEY"] = GROQ_API_KEY
     resume_text = request.text
 
     # Intializing groq model
-    llm_model = ChatGroq(model="qwen/qwen3-32b",
+    groq_llm = ChatGroq(model="qwen/qwen3-32b",
                          temperature=0,
                          max_retries=2,
                          max_tokens=None,
-                         timeout=30)
-
+                         timeout=30,
+                         reasoning_format="parsed"
+                         )
     # llm model request & response prompt
     messages = [
         ("system", resume_prompt),
@@ -50,7 +51,7 @@ async def analyze_resume(request: ResumeAnalysisRequest):
 
         Resume Content:
         ----------------
-        {request.resume_text}
+        {resume_text}
         ----------------
 
         Instructions:
@@ -68,19 +69,24 @@ async def analyze_resume(request: ResumeAnalysisRequest):
         ),
     ]
 
-    llm_model_response = llm_model.invoke(messages)
+    llm_model_response = groq_llm.invoke(messages)
     json_data_file = json.loads(llm_model_response.content)
     return {"analysis_result": json_data_file}
 
 
-@app.get("/generate_roadmap")
-def generate_roadmap(request):
-    career_role = request.careeer_role
-    llm_model = ChatGroq(model="qwen/qwen3-32b",
+@app.post("/generate_roadmap")
+def generate_roadmap(request:Roadmap):
+    career_role = request.career_role
+    
+    # Intializing groq model
+    groq_llm = ChatGroq(model="qwen/qwen3-32b",
                          temperature=0,
                          max_retries=2,
                          max_tokens=None,
-                         timeout=30)
+                         timeout=30,
+                         reasoning_format="parsed"
+                         )
+    # llm model request & response prompt
     messages = [
         ("system", roadmap_prompt),
         (
@@ -106,27 +112,32 @@ def generate_roadmap(request):
         """
         ),
     ]
-    llm_model_response = llm_model.invoke(messages)
+    llm_model_response = groq_llm.invoke(messages)
     json_data_file = json.loads(llm_model_response.content)
     return {"roadmap": json_data_file}
 
 
-
-@app.get("/generate_interview_questions")
-def generate_interview_questions(request):
-    level_type = request.level
+@app.post("/generate_interview_questions")
+def generate_interview_questions(request: InterviewQuestionsRequest):
+    level_type = request.level_type
     category = request.category
     
-    llm_model = ChatGroq(model="qwen/qwen3-32b",
+    # Intializing groq model
+    groq_llm = ChatGroq(model="qwen/qwen3-32b",
                          temperature=0,
                          max_retries=2,
                          max_tokens=None,
-                         timeout=30)
+                         timeout=30,
+                         reasoning_format="parsed"
+                         )
+    # llm model request & response prompt
     messages = [
         ("system", interview_questions_prompt),
         (
             "human",
             f"""
+            
+        "
         Generate a interview questions for {category}  of {level_type} level using a structured, phase-based format.
         
         
@@ -139,16 +150,35 @@ def generate_interview_questions(request):
         - Ensure content reflects current industry demand and commonly tested interview topics.
         - Keep structure clean, consistent, and scalable.
         - Return ONLY valid JSON.
-        - Do NOT include explanations outside the JSON.
+         - Do NOT include explanations outside.
         - Do NOT use markdown formatting.
+        """
+        """
+            interview_questions : [
+                {
+                "level": "Easy | Medium | Hard",
+                "category": "string",
+                "q": "Interview question",
+                "ans": "Clear, concise, technically accurate answer"
+                 },
+                 {
+                "level": "Easy | Medium | Hard",
+                "category": "string",
+                "q": "Interview question",
+                "ans": "Clear, concise, technically accurate answer"
+                }
+            ]
         
         
         Remember:
-        - Return ONLY valid JSON.
+        - Return ONLY valid JSON File.
         - Follow the exact structure defined in the system instructions.
+        - Please Don't return the </think> text only return dict
+        "
         """
         ),
     ]
-    llm_model_response = llm_model.invoke(messages)
+    llm_model_response = groq_llm.invoke(messages)
     json_data_file = json.loads(llm_model_response.content)
+    print(json_data_file)
     return {"interview_questions": json_data_file}
