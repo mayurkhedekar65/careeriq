@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from schemas.requestSchema import ResumeAnalysisRequest, InterviewQuestionsRequest, Roadmap
+from fastapi_app.schemas.requestSchema import ResumeAnalysisRequest, InterviewQuestionsRequest, Roadmap , AptitudeTestRequest
 from langchain_groq import ChatGroq
-from prompt.system_prompt import resume_prompt, roadmap_prompt, interview_questions_prompt
+from fastapi_app.prompt.system_prompt import resume_prompt, roadmap_prompt, interview_questions_prompt , aptitude_test_prompt
 from dotenv import load_dotenv
 import os
 import json
@@ -192,3 +192,70 @@ def generate_interview_questions(request: InterviewQuestionsRequest):
     json_data_file = json.loads(llm_model_response.content)
     print(json_data_file)
     return {"interview_questions": json_data_file}
+
+
+@app.post("/generate_aptitude_test")
+async def generate_aptitude_test(request: AptitudeTestRequest):
+    task_mode = request.test_mode
+    category = request.category
+    difficulty_level = request.difficulty_level
+    no_of_questions = request.no_of_questions
+
+    # initializing groq model
+    groq_llm = ChatGroq(model="qwen/qwen3-32b",
+                        temperature=0,
+                        max_retries=2,
+                        max_tokens=None,
+                        timeout=30,
+                        reasoning_format="parsed"
+                        )
+    # llm model request & response prompt
+    messages = [
+    ("system", aptitude_test_prompt),
+    (
+        "human",
+        f"""
+    Generate an aptitude test strictly based on the following configuration:
+
+    Test Mode: {task_mode}
+    Category: {category}
+    Difficulty Level: {difficulty_level}
+    Number of Questions: {no_of_questions}
+
+    Test Mode Behavior Rules:
+    - Practice Mode → Focus deeply on the selected category only.
+    - Assessment Mode → Simulate a structured timed assessment with progressive difficulty consistency.
+    - Full Developer Mock → Distribute questions across Logical Reasoning, Programming Logic, CS Fundamentals, Core Concepts, and Data Interpretation.
+
+    Category Handling Rules:
+    - If category is "All Categories":
+      → Distribute questions intelligently across multiple aptitude domains.
+    - Otherwise:
+      → Focus strictly on the selected category.
+
+    Difficulty Enforcement Rules:
+    - Easy → Direct concept testing, simple reasoning, single-step logic.
+    - Medium → Multi-step reasoning, applied problem solving, moderate complexity.
+    - Hard → Advanced analytical reasoning, tricky edge cases, deeper conceptual evaluation.
+
+    Distribution Rules:
+    - Generate EXACTLY {no_of_questions} questions.
+    - Ensure difficulty consistency across all generated questions.
+    - Avoid repetition.
+    - Avoid vague or overly theoretical questions.
+    - Ensure questions resemble real company aptitude tests.
+    - Include answer options (4 options per question).
+    - Provide accurate correct_answer matching one of the options.
+
+    Formatting Requirements:
+    - Return ONLY valid JSON.
+    - Do NOT add explanations outside JSON.
+    - Do NOT include <think>.
+    - Do NOT include markdown formatting.
+    - Follow the predefined JSON structure strictly.
+    """
+        ),
+    ]
+    llm_model_response = groq_llm.invoke(messages)
+    json_data_file = json.loads(llm_model_response.content)
+    return {"aptitude_test": json_data_file}

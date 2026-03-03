@@ -15,3 +15,9 @@ class InterviewQuestionsRequest(BaseModel):
 
 class Roadmap(BaseModel):
     career_role:str
+
+class AptitudeTestRequest(BaseModel):
+    test_mode: str = Field(..., description="Test mode")
+    category: str = Field(..., description="Question category")
+    difficulty_level: str = Field(..., description="Difficulty level")
+    no_of_questions: int = Field(..., gt=0, description="Number of questions for the test")
