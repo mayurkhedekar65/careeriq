@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import InterviewPrepSerializer
 from django.http import JsonResponse
 from .models import InterviewPrep , InterviewQuestion
+from django.contrib.auth.models import User
 # Create your views here.
 class Generate_questions(APIView):
     permission_classes = [IsAuthenticated]

@@ -1,4 +1,3 @@
-from .models import userresume
 from rest_framework import serializers
 from .models import InterviewPrep , InterviewQuestion
 
