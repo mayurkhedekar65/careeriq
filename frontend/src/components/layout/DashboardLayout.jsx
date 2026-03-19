@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Sidebar from './Sidebar'
-import Navbar from './Navbar'
+import Navbar from './NavBar'
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
