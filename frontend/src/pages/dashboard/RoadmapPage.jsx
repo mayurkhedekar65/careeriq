@@ -43,7 +43,7 @@ export default function RoadmapPage() {
             },
           },
       );
-      console.log(response)
+      
       setCareer(response.data.career_role);
       setRoadmap(response.data.roadmap);
       setGenerated(true);

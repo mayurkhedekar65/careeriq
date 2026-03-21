@@ -19,7 +19,7 @@ const COMPANY_TYPES = [
   "Consulting Firm",
   "DevOps Engineer"
 ];
-const EXP_LEVELS = ["0-1 year", "1-3 years", "3-5 years", "5+ years"];
+const EXP_LEVELS = ["0-1 years", "1-3 years", "3-5 years", "5+ years"];
 
 export default function InterviewPage() {
   const [form, setForm] = useState({
@@ -40,10 +40,15 @@ export default function InterviewPage() {
     try {
       setGenerated(false);
       setLoading(true);
-      const response = await axios.post(
+      const response = await axios.post( 
         "http://127.0.0.1:8000/api/interview/generate_qns/",
-        form,
+        form,  {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          },
       );
+      
       setInterviewQuestions(response.data.interview_questions);
       setGenerated(true);
       setLoading(false);

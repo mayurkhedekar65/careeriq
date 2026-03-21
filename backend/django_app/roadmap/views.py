@@ -15,7 +15,7 @@ class GenerateRoadmapView(APIView):
     def post(self, request):
         career_serializer = CareerRoleSerializer(data=request.data)
         if career_serializer.is_valid():
-            print(career_serializer.validated_data)
+            
             role_name = request.data.get("role_name")
             experience_level = request.data.get("experience_level")
             current_skills = request.data.get("current_skills")

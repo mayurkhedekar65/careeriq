@@ -6,12 +6,12 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import InterviewPrepSerializer
 from django.http import JsonResponse
 from .models import InterviewPrep, InterviewQuestion
-from django.contrib.auth.models import User
+from user.models import UserProfile as User
 
 
 # Create your views here.
 class Generate_questions(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def post(self, request):
         serializer = InterviewPrepSerializer(data=request.data)
@@ -20,9 +20,9 @@ class Generate_questions(APIView):
             company_type = request.data.get('company')
             experience_level = request.data.get('experience_level')
             tech_stack = request.data.get('tech_stack')
-            user_obj = User.objects.get(id=request.user)
+            user_obj = User.objects.get(id=request.user.id)
             db_obj = InterviewPrep.objects.create(
-                user=user_obj, target_role=target_role, company_type=company_type, experience_level=experience_level, tech_stack=tech_stack)
+                user_id=user_obj, target_role=target_role, company=company_type, experience_level=experience_level, tech_stack=tech_stack)
             response = requests.post("http://127.0.0.1:8001/generate_interview_questions", json={
                 "target_role": target_role, "company_type": company_type, "experience_level": experience_level, "tech_stack": tech_stack})
             interview_questions_data = InterviewQuestion.objects.create(
