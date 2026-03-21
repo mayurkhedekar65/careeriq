@@ -1,14 +1,13 @@
 from rest_framework import serializers
-from user.models import UserProfile
 
+class UserSignup(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    email=serializers.EmailField(max_length=30)
+    password=serializers.CharField(write_only=True)
+    confirm_password=serializers.CharField(write_only=True)
 
-class UserSignupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['name', 'email', 'password']
+class UserLogin(serializers.Serializer):
+    email=serializers.EmailField(max_length=30)
+    password=serializers.CharField(write_only=True)
 
-
-class UserLoginSerializer(serializers.Serializer):
-    class Meta:
-        model = UserProfile
-        fields = ['email', 'password']
+    

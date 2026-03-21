@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from schemas.requestSchema import ResumeAnalysisRequest, InterviewQuestionsRequest, Roadmap, AptitudeTestRequest
+from .schemas.requestSchema import ResumeAnalysisRequest, InterviewQuestionsRequest, Roadmap, AptitudeTestRequest
 from langchain_groq import ChatGroq
-from prompt.system_prompt import resume_prompt, roadmap_prompt, interview_questions_prompt, aptitude_test_prompt
+from .prompt.system_prompt import resume_prompt, roadmap_prompt, interview_questions_prompt, aptitude_test_prompt
 from dotenv import load_dotenv
 import os
 import json

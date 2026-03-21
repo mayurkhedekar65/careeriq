@@ -37,8 +37,13 @@ export default function RoadmapPage() {
       setLoading(true);
       const response = await axios.post(
         "http://127.0.0.1:8000/api/roadmap/generate_roadmap/",
-        form,
+        form,{
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          },
       );
+      console.log(response)
       setCareer(response.data.career_role);
       setRoadmap(response.data.roadmap);
       setGenerated(true);

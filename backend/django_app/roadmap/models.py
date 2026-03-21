@@ -5,7 +5,7 @@ from user.models import UserProfile
 class Roles(models.TextChoices):
     FRONTEND = 'Frontend Developer'
     BACKEND = 'Backend Developer'
-    FULLSTACK = 'Full Stack Developer'
+    FULLSTACK = 'Fullstack Developer'
     MOBILEDEVELOPER = 'Mobile Developer'
     DATASCIENTIST = 'Data Scientist'
     DEVOPS = 'DevOps Engineer'

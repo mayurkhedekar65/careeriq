@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["http://localhost:5173","localhost", "127.0.0.1"]
 
-
+AUTH_USER_MODEL = 'user.UserProfile'
 # Application definition
 
 INSTALLED_APPS = [

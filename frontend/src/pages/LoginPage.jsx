@@ -22,11 +22,13 @@ export default function LoginPage() {
           "http://127.0.0.1:8000/api/auth/login/",
           form,
         );
+        setForm({ email: "", password: "" });
+
         localStorage.setItem("access_token", response.data.access);
         localStorage.setItem("refresh_token", response.data.refresh);
-
-        setForm({ email: "", password: "" });
-        setLoading(false);
+        navigate('/dashboard')
+        alert("Login Sucessfull");
+      
       } catch (error) {
         console.log(
           "Backend not available, proceeding with mock registration",
@@ -39,7 +41,6 @@ export default function LoginPage() {
   };
   return (
     <div className="min-h-screen bg-bg flex items-center justify-center p-6 relative">
-      {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 left-1/3 w-96 h-96 rounded-full bg-accent/10 blur-[120px]" />
       </div>
@@ -50,7 +51,6 @@ export default function LoginPage() {
         transition={{ duration: 0.6 }}
         className="w-full max-w-md relative"
       >
-        {/* Header */}
         <div className="text-center mb-10">
           <Link
             to="/"

@@ -10,12 +10,12 @@ from rest_framework.response import Response
 
 # Create your views here.
 class GenerateRoadmapView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
         career_serializer = CareerRoleSerializer(data=request.data)
-        # print(career_serializer)
         if career_serializer.is_valid():
+            print(career_serializer.validated_data)
             role_name = request.data.get("role_name")
             experience_level = request.data.get("experience_level")
             current_skills = request.data.get("current_skills")
