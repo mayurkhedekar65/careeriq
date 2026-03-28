@@ -137,30 +137,46 @@ GROQ_API_KEY=your_groq_api_key
 
 ## Screenshots
 
+### Home
 ![image](assets/screencapture-localhost-5173-2026-03-28-23_19_16.png)
-
-![image](assets/screencapture-localhost-5173-login-2026-03-28-23_21_53.png)
-
-![image](assets/screencapture-localhost-5173-register-2026-03-28-23_21_29.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-2026-03-28-23_22_46.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-roadmap-2026-03-28-23_24_07.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-interview-2026-03-28-23_25_40.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-resume-2026-03-28-23_26_18.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-aptitude-2026-03-28-23_26_40.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-aptitude-2026-03-28-23_27_31.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-progress-2026-03-28-23_27_50.png)
-
-![image](assets/screencapture-localhost-5173-dashboard-settings-2026-03-28-23_28_09.png)
 
 ---
 
-## Conclusion
+### User Authentication
+![image](assets/screencapture-localhost-5173-login-2026-03-28-23_21_53.png)
 
-CareerIQ is designed to simplify career preparation by combining multiple tools into a single platform. It provides structured guidance, AI-powered assistance, and performance tracking to help users improve efficiently.
+---
+![image](assets/screencapture-localhost-5173-register-2026-03-28-23_21_29.png)
+
+---
+### DashBoard :- 
+### Overview
+![image](assets/screencapture-localhost-5173-dashboard-2026-03-28-23_22_46.png)
+
+---
+### Generate Roadmap
+![image](assets/screencapture-localhost-5173-dashboard-roadmap-2026-03-28-23_24_07.png)
+
+---
+### Interview Preparation
+![image](assets/screencapture-localhost-5173-dashboard-interview-2026-03-28-23_25_40.png)
+
+---
+### Resume Analyzer
+![image](assets/screencapture-localhost-5173-dashboard-resume-2026-03-28-23_26_18.png)
+
+---
+### Aptitude Practice
+![image](assets/screencapture-localhost-5173-dashboard-aptitude-2026-03-28-23_26_40.png)
+
+---
+### Progress Tracker
+![image](assets/screencapture-localhost-5173-dashboard-aptitude-2026-03-28-23_27_31.png)
+
+---
+![image](assets/screencapture-localhost-5173-dashboard-progress-2026-03-28-23_27_50.png)
+
+---
+### Settings
+![image](assets/screencapture-localhost-5173-dashboard-settings-2026-03-28-23_28_09.png)
+
